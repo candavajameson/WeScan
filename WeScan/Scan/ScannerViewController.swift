@@ -50,6 +50,13 @@ final class ScannerViewController: UIViewController {
         return toolbar
     }()
     
+    lazy var cameraContainerView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .darkGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var shutterButton: ShutterButton = {
         let button = ShutterButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +131,7 @@ final class ScannerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        videoPreviewLayer.frame = view.layer.bounds
+        videoPreviewLayer.frame = cameraContainerView.layer.bounds
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -144,14 +151,15 @@ final class ScannerViewController: UIViewController {
     
     private func setupViews() {
         view.backgroundColor = .darkGray
-        view.layer.addSublayer(videoPreviewLayer)
+        cameraContainerView.layer.addSublayer(videoPreviewLayer)
         quadView.translatesAutoresizingMaskIntoConstraints = false
         quadView.editable = false
         view.addSubview(toolbar)
-        view.addSubview(quadView)
+        view.addSubview(cameraContainerView)
+        cameraContainerView.addSubview(quadView)
         //view.addSubview(cancelButton)
-        view.addSubview(shutterButton)
-        view.addSubview(activityIndicator)
+        cameraContainerView.addSubview(shutterButton)
+        cameraContainerView.addSubview(activityIndicator)
     }
     
     private func setupNavigationBar() {
@@ -167,6 +175,7 @@ final class ScannerViewController: UIViewController {
     
     private func setupConstraints() {
         var toolbarConstraints = [NSLayoutConstraint]()
+        var cameraContainerConstraints = [NSLayoutConstraint]()
         var quadViewConstraints = [NSLayoutConstraint]()
         //var cancelButtonConstraints = [NSLayoutConstraint]()
         var shutterButtonConstraints = [NSLayoutConstraint]()
@@ -176,7 +185,13 @@ final class ScannerViewController: UIViewController {
             toolbar.topAnchor.constraint(equalTo: view.topAnchor),
             toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: toolbar.bottomAnchor)
+        ]
+        
+        cameraContainerConstraints = [
+            cameraContainerView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
+            cameraContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cameraContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cameraContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         
         quadViewConstraints = [
@@ -216,7 +231,7 @@ final class ScannerViewController: UIViewController {
         }
         
         // cancelButtonConstraints
-        NSLayoutConstraint.activate(toolbarConstraints + quadViewConstraints  + shutterButtonConstraints + activityIndicatorConstraints)
+        NSLayoutConstraint.activate(toolbarConstraints + cameraContainerConstraints + quadViewConstraints  + shutterButtonConstraints + activityIndicatorConstraints)
     }
     
     // MARK: - Tap to Focus
@@ -247,7 +262,7 @@ final class ScannerViewController: UIViewController {
         CaptureSession.current.removeFocusRectangleIfNeeded(focusRectangle, animated: false)
         
         focusRectangle = FocusRectangleView(touchPoint: touchPoint)
-        view.addSubview(focusRectangle)
+        cameraContainerView.addSubview(focusRectangle)
         
         do {
             try CaptureSession.current.setFocusPointToTapPoint(convertedTouchPoint)
