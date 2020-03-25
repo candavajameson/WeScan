@@ -174,7 +174,9 @@ final class ScannerViewController: UIViewController {
         
         toolbarConstraints = [
             toolbar.topAnchor.constraint(equalTo: view.topAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: toolbar.bottomAnchor)
         ]
         
         quadViewConstraints = [
