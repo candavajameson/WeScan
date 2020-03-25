@@ -104,6 +104,7 @@ final class ScannerViewController: UIViewController {
         CaptureSession.current.isAutoScanEnabled = false
         
         originalBarStyle = navigationController?.navigationBar.barStyle
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(subjectAreaDidChange), name: Notification.Name.AVCaptureDeviceSubjectAreaDidChange, object: nil)
     }
