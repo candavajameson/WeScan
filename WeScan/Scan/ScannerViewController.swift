@@ -38,8 +38,8 @@ final class ScannerViewController: UIViewController {
     /// The original bar style that was set by the host app
     private var originalBarStyle: UIBarStyle?
     
-    lazy var toolbar: UBToolbar = {
-        let toolbar = UBToolbar()
+    lazy var toolbar: UBXToolbar = {
+        let toolbar = UBXToolbar()
         toolbar.buttonImage = UIImage(named: "ic_close_20px")
         toolbar.title = self.toolbarTitle
         toolbar.tappedMainButton = {

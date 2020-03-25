@@ -1,5 +1,5 @@
 //
-//  UBToolbar.swift
+//  UBXToolbar.swift
 //  WeScan
 //
 //  Created by Jameson Candava on 3/25/20.
@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable
-public class UBToolbar: UIView {
+public class UBXToolbar: UIView {
     
     @IBInspectable
     public var title: String = "" {
