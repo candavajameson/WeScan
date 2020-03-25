@@ -81,6 +81,7 @@ final class EditScanViewController: UIViewController {
         }
 
         zoomGestureController = ZoomGestureController(image: image, quadView: quadView)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         
         let touchDown = UILongPressGestureRecognizer(target: zoomGestureController, action: #selector(zoomGestureController.handle(pan:)))
         touchDown.minimumPressDuration = 0
