@@ -44,14 +44,6 @@ final class EditScanViewController: UIViewController {
         return button
     }()
     
-    private lazy var doneButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Done", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(pushReviewController), for: .touchUpInside)
-        return button
-    }()
-    
     /// The image the quadrilateral was detected on.
     private let image: UIImage
     
@@ -82,13 +74,14 @@ final class EditScanViewController: UIViewController {
         setupConstraints()
         title = NSLocalizedString("wescan.edit.title", tableName: nil, bundle: Bundle(for: EditScanViewController.self), value: "Edit Scan", comment: "The title of the EditScanViewController")
         navigationItem.rightBarButtonItem = nextButton
-        if let firstVC = self.navigationController?.viewControllers.first, firstVC == self {
-            navigationItem.leftBarButtonItem = cancelButton
-        } else {
+        //if let firstVC = self.navigationController?.viewControllers.first, firstVC == self {
+        //    navigationItem.leftBarButtonItem = cancelButton
+        //} else {
             navigationItem.leftBarButtonItem = nil
-        }
-        
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        //}
+
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = .clear
         zoomGestureController = ZoomGestureController(image: image, quadView: quadView)
         
         let touchDown = UILongPressGestureRecognizer(target: zoomGestureController, action: #selector(zoomGestureController.handle(pan:)))
@@ -116,14 +109,12 @@ final class EditScanViewController: UIViewController {
     private func setupViews() {
         view.addSubview(imageView)
         view.addSubview(quadView)
-        view.addSubview(doneButton)
     }
     
     private func setupConstraints() {
         let imageViewConstraints = [
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
             view.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             view.leadingAnchor.constraint(equalTo: imageView.leadingAnchor)
         ]
@@ -132,28 +123,13 @@ final class EditScanViewController: UIViewController {
         quadViewHeightConstraint = quadView.heightAnchor.constraint(equalToConstant: 0.0)
         
         let quadViewConstraints = [
-            quadView.topAnchor.constraint(equalTo: view.topAnchor),
             quadView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             quadView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             quadViewWidthConstraint,
             quadViewHeightConstraint
         ]
-        
-        var doneButtonConstraints = [NSLayoutConstraint]()
-        
-        if #available(iOS 11.0, *) {
-            doneButtonConstraints =  [
-                doneButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
-//                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
-        } else {
-            doneButtonConstraints = [
-                doneButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
-//                view.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
-        }
-        
-        NSLayoutConstraint.activate(quadViewConstraints + imageViewConstraints + doneButtonConstraints)
+    
+        NSLayoutConstraint.activate(quadViewConstraints + imageViewConstraints)
     }
     
     // MARK: - Actions
