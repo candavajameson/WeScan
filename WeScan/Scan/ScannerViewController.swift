@@ -101,6 +101,7 @@ final class ScannerViewController: UIViewController {
         
         captureSessionManager = CaptureSessionManager(videoPreviewLayer: videoPreviewLayer)
         captureSessionManager?.delegate = self
+        CaptureSession.current.isAutoScanEnabled = false
         
         originalBarStyle = navigationController?.navigationBar.barStyle
         
