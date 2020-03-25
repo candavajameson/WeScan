@@ -44,7 +44,6 @@ public final class ImageScannerController: UINavigationController {
     
     /// The object that acts as the delegate of the `ImageScannerController`.
     public weak var imageScannerDelegate: ImageScannerControllerDelegate?
-    public var titleContent: String?
     
     // MARK: - Life Cycle
     
@@ -61,9 +60,9 @@ public final class ImageScannerController: UINavigationController {
         return .portrait
     }
     
-    public required init(image: UIImage? = nil, delegate: ImageScannerControllerDelegate? = nil) {
+    public required init(image: UIImage? = nil, delegate: ImageScannerControllerDelegate? = nil, title: String = "") {
         let scannerViewController = ScannerViewController()
-        scannerViewController.setup(title: titleContent ?? "")
+        scannerViewController.setup(title: title)
         
         super.init(rootViewController: scannerViewController)
         
