@@ -115,8 +115,8 @@ final class EditScanViewController: UIViewController {
     
     private func setupViews() {
         view.addSubview(imageView)
-        view.addSubview(doneButton)
         view.addSubview(quadView)
+        view.addSubview(doneButton)
     }
     
     private func setupConstraints() {
@@ -131,6 +131,7 @@ final class EditScanViewController: UIViewController {
         quadViewHeightConstraint = quadView.heightAnchor.constraint(equalToConstant: 0.0)
         
         let quadViewConstraints = [
+            quadView.topAnchor.constraint(equalTo: view.topAnchor),
             quadView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             quadView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             quadViewWidthConstraint,

@@ -66,7 +66,7 @@ public class UBXToolbar: UIView {
         mainButtonConstraints = [
             mainButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             mainButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            mainButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 20.0),
+            mainButton.widthAnchor.constraint(lessThanOrEqualToConstant: 20.0),
             mainButton.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
