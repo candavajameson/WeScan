@@ -123,7 +123,8 @@ final class EditScanViewController: UIViewController {
         let imageViewConstraints = [
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: doneButton.topAnchor)
+            view.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             view.leadingAnchor.constraint(equalTo: imageView.leadingAnchor)
         ]
         
@@ -143,12 +144,12 @@ final class EditScanViewController: UIViewController {
         if #available(iOS 11.0, *) {
             doneButtonConstraints =  [
                 doneButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
+//                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
             ]
         } else {
             doneButtonConstraints = [
                 doneButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
-                view.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
+//                view.bottomAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
             ]
         }
         
