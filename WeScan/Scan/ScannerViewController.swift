@@ -40,7 +40,7 @@ final class ScannerViewController: UIViewController {
     
     lazy var toolbar: UBXToolbar = {
         let toolbar = UBXToolbar()
-        toolbar.buttonImage = UIImage(named: "ic_close_20px")
+        toolbar.buttonImage = UIImage(named: "ic_close_20px", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
         toolbar.title = self.toolbarTitle
         toolbar.tappedMainButton = {
             guard let imageScannerController = self.navigationController as? ImageScannerController else { return }
