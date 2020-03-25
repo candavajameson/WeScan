@@ -13,7 +13,7 @@ import AVFoundation
 
 extension ScannerViewController {
     
-    func setup(title: String) {
+    public func setup(title: String) {
         self.toolbarTitle = title
     }
 }
@@ -21,7 +21,7 @@ extension ScannerViewController {
 final class ScannerViewController: UIViewController {
     
     // MARK: - Properties
-    var toolbarTitle: String!
+    var toolbarTitle: String = "Front of Check"
     
     private var captureSessionManager: CaptureSessionManager?
     private let videoPreviewLayer = AVCaptureVideoPreviewLayer()
