@@ -123,7 +123,7 @@ final class EditScanViewController: UIViewController {
         let imageViewConstraints = [
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: doneButton.topAnchor)
+            imageView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
             view.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             view.leadingAnchor.constraint(equalTo: imageView.leadingAnchor)
         ]
