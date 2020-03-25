@@ -235,10 +235,10 @@ final class ScannerViewController: UIViewController {
     @objc private func toggleAutoScan() {
         if CaptureSession.current.isAutoScanEnabled {
             CaptureSession.current.isAutoScanEnabled = false
-            autoScanButton.title = NSLocalizedString("wescan.scanning.manual", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Manual", comment: "The manual button state")
+            autoScanButton.title = NSLocalizedString("wescan.scanning.manual", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Manualo", comment: "The manual button state")
         } else {
             CaptureSession.current.isAutoScanEnabled = true
-            autoScanButton.title = NSLocalizedString("wescan.scanning.auto", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Auto", comment: "The auto button state")
+            autoScanButton.title = NSLocalizedString("wescan.scanning.auto", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Autoo", comment: "The auto button state")
         }
     }
     
