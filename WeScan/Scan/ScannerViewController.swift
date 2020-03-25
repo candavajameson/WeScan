@@ -10,7 +10,18 @@ import UIKit
 import AVFoundation
 
 /// The `ScannerViewController` offers an interface to give feedback to the user regarding quadrilaterals that are detected. It also gives the user the opportunity to capture an image with a detected rectangle.
+
+extension ScannerViewController {
+    
+    func setup(title: String) {
+        self.toolbarTitle = title
+    }
+}
+
 final class ScannerViewController: UIViewController {
+    
+    // MARK: - Properties
+    var toolbarTitle: String!
     
     private var captureSessionManager: CaptureSessionManager?
     private let videoPreviewLayer = AVCaptureVideoPreviewLayer()
@@ -20,12 +31,24 @@ final class ScannerViewController: UIViewController {
     
     /// The view that draws the detected rectangles.
     private let quadView = QuadrilateralView()
-        
+    
     /// Whether flash is enabled
     private var flashEnabled = false
     
     /// The original bar style that was set by the host app
     private var originalBarStyle: UIBarStyle?
+    
+    lazy var toolbar: UBToolbar = {
+        let toolbar = UBToolbar()
+        toolbar.buttonImage = UIImage(named: "ic_close_20px")
+        toolbar.title = self.toolbarTitle
+        toolbar.tappedMainButton = {
+            guard let imageScannerController = self.navigationController as? ImageScannerController else { return }
+            imageScannerController.imageScannerDelegate?.imageScannerControllerDidCancel(imageScannerController)
+        }
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        return toolbar
+    }()
     
     private lazy var shutterButton: ShutterButton = {
         let button = ShutterButton()
@@ -64,9 +87,9 @@ final class ScannerViewController: UIViewController {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
     }()
-
+    
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -122,8 +145,9 @@ final class ScannerViewController: UIViewController {
         view.layer.addSublayer(videoPreviewLayer)
         quadView.translatesAutoresizingMaskIntoConstraints = false
         quadView.editable = false
+        view.addSubview(toolbar)
         view.addSubview(quadView)
-        view.addSubview(cancelButton)
+        //view.addSubview(cancelButton)
         view.addSubview(shutterButton)
         view.addSubview(activityIndicator)
     }
@@ -140,13 +164,19 @@ final class ScannerViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        var toolbarConstraints = [NSLayoutConstraint]()
         var quadViewConstraints = [NSLayoutConstraint]()
-        var cancelButtonConstraints = [NSLayoutConstraint]()
+        //var cancelButtonConstraints = [NSLayoutConstraint]()
         var shutterButtonConstraints = [NSLayoutConstraint]()
         var activityIndicatorConstraints = [NSLayoutConstraint]()
         
+        toolbarConstraints = [
+            toolbar.topAnchor.constraint(equalTo: view.topAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        ]
+        
         quadViewConstraints = [
-            quadView.topAnchor.constraint(equalTo: view.topAnchor),
+            quadView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
             view.bottomAnchor.constraint(equalTo: quadView.bottomAnchor),
             view.trailingAnchor.constraint(equalTo: quadView.trailingAnchor),
             quadView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
@@ -164,24 +194,25 @@ final class ScannerViewController: UIViewController {
         ]
         
         if #available(iOS 11.0, *) {
-            cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
+//            cancelButtonConstraints = [
+//                cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
+//                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
+//            ]
             
             let shutterButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: 8.0)
             shutterButtonConstraints.append(shutterButtonBottomConstraint)
         } else {
-            cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
-                view.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
-            
+//            cancelButtonConstraints = [
+//                cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
+//                view.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
+//            ]
+//
             let shutterButtonBottomConstraint = view.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: 8.0)
             shutterButtonConstraints.append(shutterButtonBottomConstraint)
         }
         
-        NSLayoutConstraint.activate(quadViewConstraints + cancelButtonConstraints + shutterButtonConstraints + activityIndicatorConstraints)
+        // cancelButtonConstraints
+        NSLayoutConstraint.activate(toolbarConstraints + quadViewConstraints  + shutterButtonConstraints + activityIndicatorConstraints)
     }
     
     // MARK: - Tap to Focus
@@ -309,9 +340,9 @@ extension ScannerViewController: RectangleDetectionDelegateProtocol {
         let scaledImageSize = imageSize.applying(scaleTransform)
         
         let rotationTransform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
-
+        
         let imageBounds = CGRect(origin: .zero, size: scaledImageSize).applying(rotationTransform)
-
+        
         let translationTransform = CGAffineTransform.translateTransform(fromCenterOfRect: imageBounds, toCenterOfRect: quadView.bounds)
         
         let transforms = [scaleTransform, rotationTransform, translationTransform]
